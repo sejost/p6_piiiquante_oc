@@ -1,11 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser')
-const jwt = require('jsonwebtoken');
 
-const userRoutes = require('./routes/user');
+const userRoutes = require('./routes');
+const saucesRoutes = require('./routes');
 
-mongoose.connect('mongodb+srv://<hidden>.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('<mangoDB>',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
@@ -25,5 +25,6 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 app.use('/api/auth', userRoutes);
+app.use('/api', saucesRoutes);
 
 module.exports = app;

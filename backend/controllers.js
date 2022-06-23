@@ -1,7 +1,31 @@
+const Sauces = require('./models');
+const User = require('./models');
+
 const jwt = require('jsonwebtoken');
 const Str = require('@supercharge/strings'); //new package ' @supercharge/strings ' installed to generate a random string
 const bcrypt = require('bcrypt');
-const User = require('../models/User');
+
+const randomSecretToken = Str.random(32);
+
+exports.getSauces = (req, res, next) => {
+    Sauces.find()
+        .then(sauces => res.status(200).json(sauces))
+        .catch(error => res.error(400).json({ error }))
+};
+
+exports.createSauce = (req, res, next) => {
+    const newSauce = JSON.parse(req.body.thing);
+    delete newSauce._id;
+    const sauces = new Sauces({
+        ...newSauce,
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    });
+    sauces.save()
+        .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
+        .catch(error => res.status(400).json({ error }));
+};
+
+
 
 exports.signup = (req, res, next) => {
     bcrypt.hash(req.body.password, 10)
@@ -17,7 +41,7 @@ exports.signup = (req, res, next) => {
         .catch(error => res.status(500).json({ error }));
 };
 
-const randomSecretToken = Str.random(32);
+
 
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
@@ -34,8 +58,8 @@ exports.login = (req, res, next) => {
                         userId: user._id,
                         token: jwt.sign(
                             { userId: user._id },
-                            randomSecretToken,
-                            //'RANDOM_TOKEN_SECRET',
+                            //randomSecretToken,
+                            'TOKEN',
                             { expiresIn: '24h' }
                         )
                     });
