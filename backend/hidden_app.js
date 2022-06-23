@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 const userRoutes = require('./routes/user');
 
-mongoose.connect('mongodb+srv://Sejost:kCpC91c78kEv@cluster0.7dr01.mongodb.net/?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://<hidden>.mongodb.net/?retryWrites=true&w=majority',
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
