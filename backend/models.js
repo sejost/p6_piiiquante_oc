@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema({
 userSchema.plugin(uniqueValidator);
 
 
-const saucesSchema = mongoose.Schema({
+/* const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
     manufacturer: { type: String, required: true },
@@ -22,8 +22,7 @@ const saucesSchema = mongoose.Schema({
     dislikes: { type: Number, required: false },
     usersLiked: { type: Array, required: false },
     usersDisliked: { type: Array, required: false }
-})
-
+}) */
 
 module.exports = mongoose.model('User', userSchema);
-module.exports = mongoose.model('Sauces', saucesSchema);
+//module.exports = mongoose.model('Sauce', sauceSchema);

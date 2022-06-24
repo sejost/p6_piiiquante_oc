@@ -1,14 +1,17 @@
-const Sauces = require('./models');
+//const Sauce = require('./models');
 const User = require('./models');
 
 const jwt = require('jsonwebtoken');
 const Str = require('@supercharge/strings'); //new package ' @supercharge/strings ' installed to generate a random string
 const bcrypt = require('bcrypt');
 
+const fs = require('fs');
+
 const randomSecretToken = Str.random(32);
 
-exports.getSauces = (req, res, next) => {
-    Sauces.find()
+/*
+exports.getAllSauces = (req, res, next) => {
+    Sauce.find()
         .then(sauces => res.status(200).json(sauces))
         .catch(error => res.error(400).json({ error }))
 };
@@ -23,7 +26,7 @@ exports.createSauce = (req, res, next) => {
     sauces.save()
         .then(() => res.status(201).json({ message: 'Objet enregistré !' }))
         .catch(error => res.status(400).json({ error }));
-};
+};*/
 
 
 
