@@ -7,13 +7,14 @@ exports.getAllSauces = (req, res, next) => {
         .catch(error => res.error(400).json({ error }))
 };
 
-/*
+
 exports.getOneSauce = (req, res, next) => {
-    Thing.findOne({ _id: req.params.id })
+    Sauce.findOne({ _id: req.params.id })
         .then(sauce => res.status(200).json(sauce))
         .catch(error => res.status(404).json({ error }));
 };
 
+/*
 exports.createSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.thing);
     delete sauceObject._id;
