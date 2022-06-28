@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 const path = require('path')
 
 
-const userRoutes = require('./routes');
-const sauceRoutes = require('./routes');
+const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce');
 
 mongoose.connect('<hidden>',
     {
@@ -28,7 +28,7 @@ app.use(express.json());
 
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
-//app.use('/api/sauces', sauceRoutes);
+app.use('/api/sauces', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;

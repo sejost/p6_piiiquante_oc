@@ -1,0 +1,10 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+#App : Display Hidden App instead to hide mongoDB credentials
+app.js
+
+#folders
+/goodbye
+/old_goodbye
+
+
