@@ -2,6 +2,7 @@
 
 #App : Display Hidden App instead to hide mongoDB credentials
 app.js
+*.code-workspace
 
 #folders
 /goodbye

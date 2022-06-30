@@ -9,9 +9,9 @@ const sauceSchema = mongoose.Schema({
     imageUrl: { type: String, required: true },
     heat: { type: Number, required: true },
     likes: { type: Number, required: false },
-    dislikes: { type: Number, req4uired: false },
-    usersLiked: { type: Array, required: false },
-    usersDisliked: { type: Array, required: false }
+    dislikes: { type: Number, required: false },
+    usersLiked: { type: Array, "default": [], required: false },
+    usersDisliked: { type: Array, "default": [], required: false }
 });
 
 module.exports = mongoose.model('Sauce', sauceSchema);
