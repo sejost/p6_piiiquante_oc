@@ -43,9 +43,12 @@ exports.modifySauce = (req, res, next) => {
             if (sauce.userId != req.auth.userId) {
                 res.status(401).json({ message: 'Not authorized' });
             } else {
-                Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-                    .then(() => res.status(200).json({ message: 'Objet modifié!' }))
-                    .catch(error => res.status(401).json({ error }));
+                const filename = sauce.imageUrl.split('/images/')[1];
+                fs.unlink(`images/${filename}`, () => {
+                    Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
+                        .then(() => res.status(200).json({ message: 'Objet modifié!' }))
+                        .catch(error => res.status(401).json({ error }));
+                });
             }
         })
         .catch((error) => {
@@ -92,42 +95,38 @@ exports.like = (req, res, next) => {
             const userId = req.body.userId;
             const usersLikedArr = sauce.usersLiked;
             const usersDislikedArr = sauce.usersDisliked;
-            /*if (req.body.like === 1) {
-                if (!usersLikedArr.includes(userId)) {
-                    sauce.likes++;
-                    usersLikedArr.push(userId);
-                    console.log(sauce)
-                    sauce.save()
-                        .then(() => { res.status(201).json({ message: 'Like enregistré !' }) })
-                        .catch(error => { res.status(400).json({ error }) })
-                }
-                else {
-                    sauce.likes--;
-                    usersLikedArr.splice(usersLikedArr.indexOf(userId));
-                    console.log(sauce)
-                    sauce.save()
-                        .then(() => { res.status(201).json({ message: 'Like retiré !' }) })
-                        .catch(error => { res.status(400).json({ error }) })
-                }
+            if (req.body.like == 1 && (!usersLikedArr.includes(userId) || !usersDislikedArr.includes(userId))) {
+                console.log('coucou')
+                sauce.likes++;
+                usersLikedArr.push(userId);
+                sauce.save()
+                    .then(() => { res.status(201).json({ message: 'Like enregistré !' }) })
+                    .catch(error => { res.status(400).json({ error }) })
             }
-            else if (req.body.like === -1) {
-                if (!usersDislikedArr.includes(userId)) {
-                    sauce.dislikes++;
-                    usersDislikedArr.push(userId);
-                    console.log(sauce)
-                    sauce.save()
-                        .then(() => { res.status(201).json({ message: 'Like enregistré !' }) })
-                        .catch(error => { res.status(400).json({ error }) })
-                }
-                else {
-                    sauce.dislikes--;
-                    usersDislikedArr.splice(usersDislikedArr.indexOf(userId));
-                    console.log(sauce)
-                    sauce.save()
-                        .then(() => { res.status(201).json({ message: 'Like retiré !' }) })
-                        .catch(error => { res.status(400).json({ error }) })
-                }
-            }*/
+            else if (req.body.like == -1 && (!usersLikedArr.includes(userId) || !usersDislikedArr.includes(userId))) {
+                sauce.dislikes++;
+                usersDislikedArr.push(userId);
+                sauce.save()
+                    .then(() => { res.status(201).json({ message: 'Dislike enregistré !' }) })
+                    .catch(error => { res.status(400).json({ error }) })
+            }
+            else if (req.body.like == 0 && usersDislikedArr.includes(userId)) {
+                sauce.dislikes--;
+                usersDislikedArr.splice(usersDislikedArr.indexOf(userId));
+                sauce.save()
+                    .then(() => { res.status(201).json({ message: 'Dislike retiré !' }) })
+                    .catch(error => { res.status(400).json({ error }) })
+            }
+            else if (req.body.like == 0 && usersLikedArr.includes(userId)) {
+                sauce.likes--;
+                usersLikedArr.splice(usersLikedArr.indexOf(userId));
+                sauce.save()
+                    .then(() => { res.status(201).json({ message: 'Like retiré !' }) })
+                    .catch(error => { res.status(400).json({ error }) })
+            }
+            else {
+                error(`Action impossible`)
+            }
         })
         .catch((error) => {
             res.status(400).json({ error })
