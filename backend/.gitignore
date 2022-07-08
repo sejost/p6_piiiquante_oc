@@ -1,5 +1,5 @@
 **Hide sensitive Data***
-app.js
+.env
 
 **Don't commit heavy folders **
 /images
